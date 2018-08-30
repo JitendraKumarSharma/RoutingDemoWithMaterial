@@ -1,0 +1,24 @@
+<h2>Routing Demo</h2>
+<nav class="navbar navbar-default doNotPrint">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li>
+            <a class="active" routerLink="/employee" routerLinkActive="active">Employee</a>
+          </li>
+          <li>
+            <a routerLink="/customer" routerLinkActive="active">Customer</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="row">
+    <!-- Routed views goes here -->
+    <router-outlet></router-outlet>
+  </div>
+</div>
