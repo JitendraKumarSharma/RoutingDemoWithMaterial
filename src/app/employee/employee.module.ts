@@ -10,7 +10,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule, MatCheckboxModule, MatCardModule } from '@angular/material';
-
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -24,10 +26,14 @@ import { MatInputModule, MatCheckboxModule, MatCardModule } from '@angular/mater
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatCardModule
+    MatCardModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
-    EmployeeListComponent
+    EmployeeListComponent,
+    AddEmployeeComponent
   ],
   providers: [EmployeeService]
 })

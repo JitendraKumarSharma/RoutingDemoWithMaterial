@@ -8,6 +8,7 @@ import { CustomerService } from './services/customer.service';
 import { Global } from './globals/global';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+
 @NgModule({
   declarations: [
     AppComponent,

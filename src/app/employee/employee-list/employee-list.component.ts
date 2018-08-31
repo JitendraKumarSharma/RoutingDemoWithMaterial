@@ -17,6 +17,9 @@ export class EmployeeListComponent implements OnInit {
     private empService: EmployeeService
   ) { }
 
+  public showForm = false;
+  public viewEmpData: any = {};
+  public loading = false;
   empList: Employee[];
 
   pageSizes = [5, 10, 20];
@@ -35,6 +38,10 @@ export class EmployeeListComponent implements OnInit {
   selection = new SelectionModel<Employee>(true, []);
 
   ngOnInit() {
+    this.getAllEmployee();
+  }
+
+  getAllEmployee() {
     this.empService.getEmployeeDB()
       .subscribe(
         data => {
@@ -42,7 +49,7 @@ export class EmployeeListComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.empList);
         });
   }
-
+  
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -74,6 +81,50 @@ export class EmployeeListComponent implements OnInit {
       return false;
     }
   }
+
+  toggleForm(loading) {
+    debugger
+    if (loading == true) {
+      this.viewEmpData = {};
+      this.ngOnInit();
+    }
+    this.showForm = !loading;
+    return !this.showForm;
+  }
+
+  empEditForm(emp: Employee) {
+    this.getEmployeeDetail(emp);
+    this.showForm = true;
+  }
+
+  getEmployeeDetail(emp: Employee) {
+    this.empService.getEmployeeByEmpIdDB(emp.EmpId)
+      .subscribe(
+        data => {
+          this.viewEmpData = data[0];
+        });
+  }
+
+  // getEmployeeDetail = function (emp) {
+
+  //   this.CommonService.apiService(
+  //     "GET",
+  //     "user/" + client.user_id,
+  //     this.clientOptions
+  //   ).subscribe(
+  //     (response: any) => {
+  //       console.log("response.data", response.data);
+  //       if (response.status === true) {
+  //         if (response.data) {
+  //           this.editClientData = response.data;
+  //         }
+  //       }
+  //     },
+  //     err => {
+  //       console.log(err);
+  //     }
+  //   );
+  // };
 
   // yourEventHandler(event) {
   //   this.pageSize = event.pageSize;

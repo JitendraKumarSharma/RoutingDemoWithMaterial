@@ -1,0 +1,14 @@
+<button mat-button (click)="backToList();">Employee List</button>
+<form [formGroup]="empForm" class="example-form">
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Name" id="emp_name" formControlName="emp_name" required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Email" id="emp_email" formControlName="emp_email" required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Age" id="emp_age" formControlName="emp_age" required>
+  </mat-form-field>
+</form>
