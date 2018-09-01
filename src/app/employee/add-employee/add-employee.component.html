@@ -11,4 +11,33 @@
   <mat-form-field class="example-full-width">
     <input matInput placeholder="Age" id="emp_age" formControlName="emp_age" required>
   </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select formControlName="emp_country" id="emp_country" placeholder="Select Country" (selectionChange)="getStateByCountry($event.value)">
+      <mat-option *ngFor="let obj of countryList" [value]="obj.CountryId">
+        {{obj.CountryName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <mat-select formControlName="emp_state" id="emp_state" placeholder="Select State">
+      <mat-option *ngFor="let obj of stateList" [value]="obj.StateId">
+        {{obj.StateName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="City" id="emp_city" formControlName="emp_city" required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Zipcode" id="emp_zipcode" formControlName="emp_zipcode" required>
+  </mat-form-field>
+
+  <mat-form-field class="example-full-width">
+    <input matInput placeholder="Zipcode" id="emp_mobile" formControlName="emp_mobile" required>
+  </mat-form-field>
+
 </form>

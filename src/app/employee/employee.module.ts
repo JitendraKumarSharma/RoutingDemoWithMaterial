@@ -13,6 +13,7 @@ import { MatInputModule, MatCheckboxModule, MatCardModule } from '@angular/mater
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   imports: [
@@ -29,7 +30,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MatCardModule,
     MatButtonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   declarations: [
     EmployeeListComponent,

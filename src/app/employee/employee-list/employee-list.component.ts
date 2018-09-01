@@ -4,6 +4,7 @@ import { Employee } from '../employee';
 import { MatPaginator, MatTableDataSource, MatSort, MatFooterRow } from '@angular/material';
 import { DataSource } from '@angular/cdk/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { forEach } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-employee-list',
@@ -13,9 +14,39 @@ import { SelectionModel } from '@angular/cdk/collections';
 
 export class EmployeeListComponent implements OnInit {
 
+  //v = [];
+
   constructor(
     private empService: EmployeeService
-  ) { }
+  ) {
+    // this.v = [{
+    //   "add_on_id": "d79ae1a245593552b8d662496f3e5d07", "name": " Color Switcher Left", "location": "Left Sleeve", "ink_count": 2, "pricing": {
+    //     "1": ["40", "50", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    //     "2": ["40", "50", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //   }
+    // },
+    // {
+    //   "add_on_id": "77f93d271eb19067f7a01039c885491b", "name": "Foil", "location": "Front", "ink_count": 4, "pricing": {
+    //     "1": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    //     "2": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    //     "3": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    //     "4": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //   }
+    // },
+    // {
+    //   "add_on_id": "03a42030365d72cbf4d36a019d1eee0a", "name": "Foil", "location": "Back", "ink_count": 2, "pricing": {
+    //     "1": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    //     "2": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    //   }
+    // }];
+
+    // for (var x in this.v) {
+    //   const mapped = Object.keys(this.v[x].pricing).map(key => ({ 'id': key, 'val': this.v[x].pricing[key] }));
+    //   this.v[x].pricing = mapped;
+    // }
+    // console.log(this.v);
+  }
+
 
   public showForm = false;
   public viewEmpData: any = {};
@@ -49,7 +80,7 @@ export class EmployeeListComponent implements OnInit {
           this.dataSource = new MatTableDataSource(this.empList);
         });
   }
-  
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
@@ -83,13 +114,17 @@ export class EmployeeListComponent implements OnInit {
   }
 
   toggleForm(loading) {
-    debugger
     if (loading == true) {
       this.viewEmpData = {};
       this.ngOnInit();
     }
     this.showForm = !loading;
     return !this.showForm;
+  }
+
+  goToAddEmployee() {
+    this.showForm = true;
+    this.viewEmpData.EmpId = 0;
   }
 
   empEditForm(emp: Employee) {
@@ -104,27 +139,6 @@ export class EmployeeListComponent implements OnInit {
           this.viewEmpData = data[0];
         });
   }
-
-  // getEmployeeDetail = function (emp) {
-
-  //   this.CommonService.apiService(
-  //     "GET",
-  //     "user/" + client.user_id,
-  //     this.clientOptions
-  //   ).subscribe(
-  //     (response: any) => {
-  //       console.log("response.data", response.data);
-  //       if (response.status === true) {
-  //         if (response.data) {
-  //           this.editClientData = response.data;
-  //         }
-  //       }
-  //     },
-  //     err => {
-  //       console.log(err);
-  //     }
-  //   );
-  // };
 
   // yourEventHandler(event) {
   //   this.pageSize = event.pageSize;

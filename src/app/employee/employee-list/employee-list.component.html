@@ -1,10 +1,9 @@
 <h2>Employee Management</h2>
-<app-add-employee *ngIf="showForm===true && !viewEmpData.EmpId" (toggleForm)="toggleForm(showForm)"></app-add-employee>
+<app-add-employee *ngIf="showForm===true && viewEmpData.EmpId==0" (toggleForm)="toggleForm(showForm)"></app-add-employee>
 <app-add-employee *ngIf="showForm===true && viewEmpData.EmpId" (toggleForm)="toggleForm(showForm)" [viewEmpData]="viewEmpData"></app-add-employee>
 <div *ngIf="showForm===false">
   <form>
-
-    <button mat-button (click)="toggleForm(showForm);">Add Employee</button>
+    <button mat-button (click)="goToAddEmployee();">Add Employee</button>
 
     <!-- <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
@@ -78,4 +77,54 @@
       </table>
     </div>
   </form>
+  <!-- <table style="width:100%">
+    <tr *ngFor="let obj of v">
+      <td>{{obj.add_on_id}}</td>
+      <td>{{obj.ink_count}}</td>
+      <td>{{obj.location}}</td>
+      <td>{{obj.name}}</td>
+      <td>
+        <table>
+          <tr *ngFor="let obj1 of obj.pricing">
+            <td>{{obj1.id}} </td>
+            <td>
+              <table>
+                <tr *ngFor="let obj2 of obj1.val;let i=index">
+                  <td>
+                    {{obj2}}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+
+  <table style="width:100%" border="all">
+      <tr *ngFor="let obj of v">
+        <td>{{obj.add_on_id}}</td>
+        <td>{{obj.ink_count}}</td>
+        <td>{{obj.location}}</td>
+        <td>{{obj.name}}</td>
+        <td>
+          <table>
+            <tr *ngFor="let obj1 of obj.pricing | keyvalue">
+              <td>{{obj1.id}} </td>
+              <td>
+                <table>
+                  <tr *ngFor="let obj2 of obj1.value | keyvalue">
+  
+                    <td>
+                      {{obj2.value}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table> -->
 </div>
