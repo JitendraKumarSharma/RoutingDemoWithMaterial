@@ -5,6 +5,8 @@ import { MatPaginator, MatTableDataSource, MatSort, MatFooterRow } from '@angula
 import { DataSource } from '@angular/cdk/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { forEach } from '@angular/router/src/utils/collection';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { isObject } from 'util';
 
 @Component({
   selector: 'app-employee-list',
@@ -17,7 +19,8 @@ export class EmployeeListComponent implements OnInit {
   //v = [];
 
   constructor(
-    private empService: EmployeeService
+    private empService: EmployeeService,
+    public dialog: MatDialog
   ) {
     // this.v = [{
     //   "add_on_id": "d79ae1a245593552b8d662496f3e5d07", "name": " Color Switcher Left", "location": "Left Sleeve", "ink_count": 2, "pricing": {
@@ -52,6 +55,10 @@ export class EmployeeListComponent implements OnInit {
   public viewEmpData: any = {};
   public loading = false;
   empList: Employee[];
+  empSelArr: Employee[] = [];
+  empDel: Employee;
+  empId: number;
+  private dialogRef;
 
   pageSizes = [5, 10, 20];
   pageSize: number;
@@ -64,7 +71,7 @@ export class EmployeeListComponent implements OnInit {
   // @ViewChild(MatSort) sort: MatSort;
   // debugger
 
-  displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB'];
+  displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB', 'Action'];
   dataSource: MatTableDataSource<Employee>;
   selection = new SelectionModel<Employee>(true, []);
 
@@ -96,9 +103,22 @@ export class EmployeeListComponent implements OnInit {
   }
 
   masterToggle() {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+    if (this.isAllSelected()) {
+      this.selection.clear();
+      this.dataSource.data.forEach(row => {
+        this.empSelArr.splice(this.empSelArr.indexOf(row), 1)
+      });
+    }
+    else {
+      this.dataSource.data.forEach(row => {
+        this.selection.select(row);
+        this.empSelArr.push(row);
+      });
+
+    }
+    // this.isAllSelected() ?
+    //   this.selection.clear() :
+    //   this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
   //Get Complete Row Data
@@ -111,6 +131,102 @@ export class EmployeeListComponent implements OnInit {
       this.flag = 0;
       return false;
     }
+  }
+
+  checkbox(empObj: Employee) {
+    debugger
+    if (this.empSelArr.find(x => x == empObj)) {
+      this.empSelArr.splice(this.empSelArr.indexOf(empObj), 1);
+    }
+    else {
+      this.empSelArr.push(empObj);
+
+    }
+  }
+
+
+  openDialog(deleteEmp, emp): void {
+    if (isObject(emp)) {
+      this.flag = 1;
+      this.empDel = emp;
+    }
+    else {
+      this.flag = 0;
+    }
+
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.width = '500px'
+    // dialogConfig.position = {
+    //   top: '0',
+    //   left: '0'
+    // };
+
+    this.dialogRef = this.dialog.open(deleteEmp, dialogConfig);
+    this.dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      //this.animal = result;
+    });
+  }
+
+  close() {
+    this.flag = 0;
+    this.dialogRef.close();
+  }
+
+  save() {
+    debugger
+    this.deleteEmployee();
+    this.dialogRef.close();
+  }
+
+  deleteEmployee() {
+    debugger
+    if (this.flag == 1) {
+      var self = this;
+      var promise = new Promise(function (reslove, reject) {
+        self.empService.deleteEmployeeByEmpIdDB(self.empDel.EmpId)
+          .subscribe(
+            data => {
+              self.empId = data; //For NodeJs API
+              reslove(self.empId);
+            });
+      });
+      promise.then(function (res) {
+        self.getAllEmployee();
+        //self.empImage = "blank.png";
+        //self.reset();
+        alert("Employee Deleted Successfully!!");
+      });
+    }
+    else if (this.flag == 0) {
+      this.deleteSelectedEmployee();
+    }
+    this.dialogRef.close();
+  }
+
+  deleteSelectedEmployee() {
+    var self = this;
+    var promoise = new Promise(function (resolve, reject) {
+      for (self.cnt = 0; self.cnt < self.empSelArr.length; self.cnt++) {
+        if (self.empList.find(x => x == self.empSelArr[self.cnt])) {
+          self.empService.deleteEmployeeByEmpIdDB(self.empSelArr[self.cnt].EmpId)
+            .subscribe(
+              data => {
+                self.empId = data;
+                resolve(self.empId);
+              });
+        }
+      }
+    });
+    promoise.then(function (res) {
+      self.empSelArr = [];
+      self.getAllEmployee();
+      // self.empImage = "blank.png";
+      // self.reset();
+      alert("Employee Deleted Successfully!!");
+    });
   }
 
   toggleForm(loading) {
@@ -139,6 +255,7 @@ export class EmployeeListComponent implements OnInit {
           this.viewEmpData = data[0];
         });
   }
+
 
   // yourEventHandler(event) {
   //   this.pageSize = event.pageSize;

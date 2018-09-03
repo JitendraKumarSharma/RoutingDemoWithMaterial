@@ -41,6 +41,11 @@ export class EmployeeService {
 
   getStateByCountry(Id: number) {
     return this.http.get<State[]>(this.global.apiUrl + "/getStateByCountry/" + Id)
-        .pipe(catchError(this.errorHandler));
-}
+      .pipe(catchError(this.errorHandler));
+  }
+
+  deleteEmployeeByEmpIdDB(Id: number) {
+    return this.http.delete<number>(this.global.apiUrl + "/employees/" + Id)
+      .pipe(catchError(this.errorHandler));
+  }
 }

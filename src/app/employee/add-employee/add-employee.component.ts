@@ -27,7 +27,10 @@ export class AddEmployeeComponent implements OnInit {
       emp_state: ['', Validators.required],
       emp_city: [null, Validators.email],
       emp_zipcode: [null, Validators.email],
-      emp_mobile: [null, Validators.email]
+      emp_mobile: [null, Validators.email],
+      emp_gender: [null, Validators.required],
+      emp_ismarried: [null, Validators.required],
+      emp_dob: [null, Validators.required],
       //phone: [null, Validators.pattern("[0-9]{10}")],
       //username: [null, Validators.minLength(5)],
       //password: [null, Validators.minLength(8)],
@@ -47,59 +50,83 @@ export class AddEmployeeComponent implements OnInit {
   stateList: State[];
 
   ngOnInit() {
-    this.getAllCountry();
-    if (this.viewEmpData) {
-      this.empForm.setValue({
-        'emp_name': this.viewEmpData.Name,
-        'emp_email': this.viewEmpData.Email,
-        'emp_age': this.viewEmpData.Age,
-        'emp_country': this.viewEmpData.CountryId,
-        'emp_state': this.viewEmpData.StateId,
-        'emp_city': this.viewEmpData.City,
-        'emp_zipcode': this.viewEmpData.ZipCode,
-        'emp_mobile': this.viewEmpData.Mobile,
-        // 'last_name': this.editSubscriberData.last_name,
-        // 'email': this.editSubscriberData.email,
-        // 'phone': this.editSubscriberData.phone,
-        // 'username': this.editSubscriberData.username,
-        // 'password': '',
-        // 'confirm_password': ''
-      });
-    }
+    debugger
+    this.getAllCountry().then(value => {
+      if (this.viewEmpData) {
+        this.empForm.setValue({
+          'emp_name': this.viewEmpData.Name,
+          'emp_email': this.viewEmpData.Email,
+          'emp_age': this.viewEmpData.Age,
+          'emp_country': this.viewEmpData.CountryId,
+          'emp_state': this.viewEmpData.StateId,
+          'emp_city': this.viewEmpData.City,
+          'emp_zipcode': this.viewEmpData.ZipCode,
+          'emp_mobile': this.viewEmpData.Mobile,
+          'emp_gender': this.viewEmpData.Gender,
+          'emp_ismarried': this.viewEmpData.IsMarried,
+          'emp_dob': this.viewEmpData.DOB
+          // 'last_name': this.editSubscriberData.last_name,
+          // 'email': this.editSubscriberData.email,
+          // 'phone': this.editSubscriberData.phone,
+          // 'username': this.editSubscriberData.username,
+          // 'password': '',
+          // 'confirm_password': ''
+        });
+      }
+    });
   }
 
   backToList(): void {
     this.toggleForm.emit();
   }
 
-  getAllCountry() {
-    this.empService.getAllCountry()
-      .subscribe(
-        data => {
-          this.countryList = data;
-          this.empForm.controls['emp_country'].setValue(this.countryList[0].CountryId);
-          if (this.viewEmpData !== undefined && this.viewEmpData.CountryId > 0) {
-            this.empForm.controls['emp_country'].setValue(this.viewEmpData.CountryId);
-            this.getStateByCountry(this.viewEmpData.CountryId);
-          }
-          else {
-            this.getStateByCountry(this.countryList[0].CountryId);
-          }
+  //Code to enter only number
+  keyPress(event: any) {
+    //const pattern = /[0-9\+\-\ ]/;// Number with + and - sign
+    const pattern = /[0-9]/; // Only Numbers
 
-        });
+    let inputChar = String.fromCharCode(event.charCode);
+    if (event.keyCode != 8 && !pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  ////////////////////
+
+  getAllCountry() {
+    return new Promise(resolve => {
+      this.empService.getAllCountry()
+        .subscribe(
+          data => {
+            this.countryList = data;
+            if (this.viewEmpData !== undefined && this.viewEmpData.CountryId > 0) {
+              this.getStateByCountry(1, this.viewEmpData.CountryId).then(value => {
+                resolve();
+              });
+            }
+            else {
+              this.empForm.controls['emp_country'].setValue(this.countryList[0].CountryId);
+              this.getStateByCountry(0, this.countryList[0].CountryId).then(value => {
+                resolve();
+              });
+            }
+          });
+    });
   }
 
-  getStateByCountry(countryId: number) {
-    this.empService.getStateByCountry(countryId)
-      .subscribe(
-        data => {
-          this.stateList = data;
-          if (this.viewEmpData !== undefined && this.viewEmpData.StateId > 0) {
-            this.empForm.controls['emp_state'].setValue(this.viewEmpData.StateId);
-          }
-          else {
-            this.empForm.controls['emp_state'].setValue(this.stateList[0].StateId);
-          }
-        });
+  getStateByCountry(flag: number, country_id: number) {
+    return new Promise(resolve => {
+      this.empService.getStateByCountry(country_id)
+        .subscribe(
+          data => {
+            this.stateList = data;
+            if (this.viewEmpData !== undefined && this.viewEmpData.StateId > 0 && flag == 1) {
+              resolve();
+            }
+            else {
+              this.empForm.controls['emp_state'].setValue(this.stateList[0].StateId);
+              resolve();
+            }
+          });
+    });
   }
 }

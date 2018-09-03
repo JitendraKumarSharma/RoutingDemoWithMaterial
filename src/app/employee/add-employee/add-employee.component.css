@@ -7,3 +7,17 @@
 .example-full-width {
   width: 100%;
 }
+
+.chk
+{
+  display: block;
+  padding: 10px;
+  font-size:13px;
+  color:gray;
+}
+
+.radio{
+  color: gray;
+  font-size: 13px;
+  padding: 10px;
+}
