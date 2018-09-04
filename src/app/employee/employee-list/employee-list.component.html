@@ -7,7 +7,6 @@
     <!-- <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field> -->
-
     <div class="mat-elevation-z8">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
@@ -76,7 +75,9 @@
             Action
           </th>
           <td mat-cell *matCellDef="let row">
-            <button mat-raised-button color="primary" (click)="openDialog(deleteEmp,row)">Delete</button>
+            <i class="material-icons md-dark md-60" (click)="openDialog(deleteEmp,row)">
+              highlight_off
+            </i>
           </td>
         </ng-container>
 
@@ -86,6 +87,7 @@
       </table>
     </div>
 
+    <!-- Dialog Code Start -->
     <ng-template #deleteEmp>
 
       <h2 mat-dialog-title>
@@ -102,22 +104,8 @@
       </mat-dialog-actions>
 
     </ng-template>
+    <!-- Dialog Code End -->
 
-    <!-- <ng-template #deleteEmp let-c="close" let-d="dismiss">
-      <div class="modal-header">
-        <h4 class="modal-title">Warning</h4>
-        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <p>Sure you want to delete selected record(s)?</p>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="c(deleteEmployee())">Yes</button>
-        <button type="button" class="btn btn-primary" (click)="c('Close click')">No</button>
-      </div>
-    </ng-template> -->
   </form>
   <!-- <table style="width:100%">
     <tr *ngFor="let obj of v">

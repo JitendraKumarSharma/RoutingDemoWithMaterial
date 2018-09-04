@@ -9,7 +9,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule, MatCheckboxModule, MatCardModule } from '@angular/material';
+import { MatInputModule, MatCheckboxModule, MatCardModule, MatDialogModule } from '@angular/material';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,7 +17,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
-import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -45,6 +44,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     EmployeeListComponent,
     AddEmployeeComponent
   ],
-  providers: [EmployeeService]
+  providers: [
+    EmployeeService
+  ]
 })
 export class EmployeeModule { }

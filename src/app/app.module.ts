@@ -7,19 +7,27 @@ import { EmployeeService } from './services/employee.service';
 import { CustomerService } from './services/customer.service';
 import { Global } from './globals/global';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { ProgressSpinnerDialogComponent } from './globals/progress-spinner-dialog/progress-spinner-dialog.component';
+import { FlashMessagesModule } from 'angular2-flash-messages';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ProgressSpinnerDialogComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    MatProgressSpinnerModule,
+    FlashMessagesModule.forRoot(),
   ],
   providers: [EmployeeService, CustomerService, Global],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ProgressSpinnerDialogComponent
+  ]
 })
 export class AppModule { }

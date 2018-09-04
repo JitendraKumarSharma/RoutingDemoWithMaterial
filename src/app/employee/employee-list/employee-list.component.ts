@@ -5,8 +5,10 @@ import { MatPaginator, MatTableDataSource, MatSort, MatFooterRow } from '@angula
 import { DataSource } from '@angular/cdk/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { forEach } from '@angular/router/src/utils/collection';
-import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { isObject } from 'util';
+import { ProgressSpinnerDialogComponent } from '../../globals/progress-spinner-dialog/progress-spinner-dialog.component';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-employee-list',
@@ -18,10 +20,14 @@ export class EmployeeListComponent implements OnInit {
 
   //v = [];
 
+
   constructor(
     private empService: EmployeeService,
-    public dialog: MatDialog
+    private dialog: MatDialog,
+    private _flashMessagesService: FlashMessagesService
   ) {
+    // let observable = new Observable(this.myObservable);
+    // this.showProgressSpinnerUntilExecuted(observable);
     // this.v = [{
     //   "add_on_id": "d79ae1a245593552b8d662496f3e5d07", "name": " Color Switcher Left", "location": "Left Sleeve", "ink_count": 2, "pricing": {
     //     "1": ["40", "50", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -50,7 +56,31 @@ export class EmployeeListComponent implements OnInit {
     // console.log(this.v);
   }
 
-
+  // myObservable(observer) {
+  //   setTimeout(() => {
+  //     observer.next("done waiting for 5 sec");
+  //     observer.complete();
+  //   }, 5000);
+  // }
+  // showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
+  //   let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
+  //     panelClass: 'transparent'
+  //     //disableClose: true
+  //   });
+  //   let subscription = observable.subscribe(
+  //     (response: any) => {
+  //       subscription.unsubscribe();
+  //       //handle response
+  //       console.log(response);
+  //       dialogRef.close();
+  //     },
+  //     (error) => {
+  //       subscription.unsubscribe();
+  //       //handle error
+  //       dialogRef.close();
+  //     }
+  //   );
+  // }
   public showForm = false;
   public viewEmpData: any = {};
   public loading = false;
@@ -164,21 +194,21 @@ export class EmployeeListComponent implements OnInit {
     // };
 
     this.dialogRef = this.dialog.open(deleteEmp, dialogConfig);
-    this.dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //this.animal = result;
-    });
+    // this.dialogRef.afterClosed().subscribe(result => {
+    //   console.log('The dialog was closed');
+    //   //this.animal = result;
+    // });
   }
 
   close() {
-    this.flag = 0;
     this.dialogRef.close();
+    this.flag = 0;
   }
 
   save() {
     debugger
-    this.deleteEmployee();
     this.dialogRef.close();
+    this.deleteEmployee();
   }
 
   deleteEmployee() {
@@ -186,9 +216,11 @@ export class EmployeeListComponent implements OnInit {
     if (this.flag == 1) {
       var self = this;
       var promise = new Promise(function (reslove, reject) {
+        self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent);
         self.empService.deleteEmployeeByEmpIdDB(self.empDel.EmpId)
           .subscribe(
             data => {
+              self.dialogRef.close();
               self.empId = data; //For NodeJs API
               reslove(self.empId);
             });
@@ -197,23 +229,24 @@ export class EmployeeListComponent implements OnInit {
         self.getAllEmployee();
         //self.empImage = "blank.png";
         //self.reset();
-        alert("Employee Deleted Successfully!!");
+        self._flashMessagesService.show('Employee Deleted Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
       });
     }
     else if (this.flag == 0) {
       this.deleteSelectedEmployee();
     }
-    this.dialogRef.close();
   }
 
   deleteSelectedEmployee() {
     var self = this;
     var promoise = new Promise(function (resolve, reject) {
+      self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent);
       for (self.cnt = 0; self.cnt < self.empSelArr.length; self.cnt++) {
         if (self.empList.find(x => x == self.empSelArr[self.cnt])) {
           self.empService.deleteEmployeeByEmpIdDB(self.empSelArr[self.cnt].EmpId)
             .subscribe(
               data => {
+                self.dialogRef.close();
                 self.empId = data;
                 resolve(self.empId);
               });
@@ -225,7 +258,7 @@ export class EmployeeListComponent implements OnInit {
       self.getAllEmployee();
       // self.empImage = "blank.png";
       // self.reset();
-      alert("Employee Deleted Successfully!!");
+      self._flashMessagesService.show('Employee Deleted Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
     });
   }
 
@@ -255,7 +288,6 @@ export class EmployeeListComponent implements OnInit {
           this.viewEmpData = data[0];
         });
   }
-
 
   // yourEventHandler(event) {
   //   this.pageSize = event.pageSize;

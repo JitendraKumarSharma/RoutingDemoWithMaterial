@@ -4,6 +4,9 @@ import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../employee';
 import { Country } from '../../globals/country';
 import { State } from '../../globals/state';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { ProgressSpinnerDialogComponent } from '../../globals/progress-spinner-dialog/progress-spinner-dialog.component';
+import { FlashMessagesService } from 'angular2-flash-messages';
 
 @Component({
   selector: 'app-add-employee',
@@ -14,7 +17,9 @@ export class AddEmployeeComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private empService: EmployeeService
+    private empService: EmployeeService,
+    private dialog: MatDialog,
+    private _flashMessagesService: FlashMessagesService,
   ) {
     this.empForm = formBuilder.group({
       emp_name: [null, Validators.required],
@@ -48,9 +53,13 @@ export class AddEmployeeComponent implements OnInit {
   empForm: FormGroup;
   countryList: Country[];
   stateList: State[];
+  private dialogRef;
 
   ngOnInit() {
     debugger
+    setTimeout(() => {
+      this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent)
+    })
     this.getAllCountry().then(value => {
       if (this.viewEmpData) {
         this.empForm.setValue({
@@ -73,6 +82,7 @@ export class AddEmployeeComponent implements OnInit {
           // 'confirm_password': ''
         });
       }
+      this.dialogRef.close();
     });
   }
 
