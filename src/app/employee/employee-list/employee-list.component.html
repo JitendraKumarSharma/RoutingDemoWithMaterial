@@ -2,8 +2,11 @@
 <app-add-employee *ngIf="showForm===true && viewEmpData.EmpId" (toggleForm)="toggleForm(showForm)" [viewEmpData]="viewEmpData"></app-add-employee>
 <div *ngIf="showForm===false">
   <form>
-    <button mat-raised-button color="primary" (click)="goToAddEmployee();">Add Employee</button>
-    <button mat-raised-button color="warn" *ngIf="empSelArr.length>0" (click)="openDialog(deleteEmp,0)">Delete Selected Records</button>
+    <div class="button-title">
+      <h4 class="float-left">Employee List</h4>
+      <button mat-raised-button color="primary" class="float-right" (click)="goToAddEmployee();">Add Employee</button>
+      <button mat-raised-button color="warn" class="float-right" *ngIf="empSelArr.length>0" (click)="openDialog(deleteEmp,0)">Delete Selected Records</button>
+    </div>
     <!-- <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
     </mat-form-field> -->

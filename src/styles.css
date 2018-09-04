@@ -1,6 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "src/assets/css/bootstrap.css";
+
+.mat-raised-button{
+  margin: 0px 5px!important;
+}
+
+.button-title
+{
+  margin: 10px;
+}
+.center{
+  text-align: center;
+}
+
+/* .example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+} */
+
+.example-full-width {
+  width: 100%;
+}
+
+.chk
+{
+  display: block;
+  padding: 10px;
+  font-size:13px;
+  color:gray;
+}
+
+.radio{
+  color: gray;
+  font-size: 13px;
+  padding: 10px;
+}
+
 .material-icons {
     
     font-size: 34px;  /* Preferred icon size */

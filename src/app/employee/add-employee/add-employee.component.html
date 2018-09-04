@@ -1,56 +1,67 @@
-<button mat-raised-button color="primary" (click)="backToList();">Employee List</button>
+<div class="button-title">
+  <h4 class="float-left">Add/Update Employee</h4>
+  <button mat-raised-button color="primary" class="float-right" (click)="backToList();">Employee List</button>
+</div>
 <form [formGroup]="empForm" class="example-form">
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Name" id="emp_name" formControlName="emp_name" required>
-  </mat-form-field>
+  <div class="col-md-6">
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Name" id="emp_name" formControlName="emp_name" required>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Email" id="emp_email" formControlName="emp_email" required>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Email" id="emp_email" formControlName="emp_email" required>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Age" id="emp_age" (keypress)="keyPress($event)" formControlName="emp_age" required>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Age" id="emp_age" (keypress)="keyPress($event)" formControlName="emp_age" required>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-select formControlName="emp_country" id="emp_country" placeholder="Select Country" (selectionChange)="getStateByCountry(0,$event.value)">
-      <mat-option *ngFor="let obj of countryList" [value]="obj.CountryId">
-        {{obj.CountryName}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select formControlName="emp_country" id="emp_country" placeholder="Select Country" (selectionChange)="getStateByCountry(0,$event.value)">
+        <mat-option *ngFor="let obj of countryList" [value]="obj.CountryId">
+          {{obj.CountryName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <mat-select formControlName="emp_state" id="emp_state" placeholder="Select State">
-      <mat-option *ngFor="let obj of stateList" [value]="obj.StateId">
-        {{obj.StateName}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-select formControlName="emp_state" id="emp_state" placeholder="Select State">
+        <mat-option *ngFor="let obj of stateList" [value]="obj.StateId">
+          {{obj.StateName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="City" id="emp_city" formControlName="emp_city" required>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="City" id="emp_city" formControlName="emp_city" required>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Zipcode" id="emp_zipcode" formControlName="emp_zipcode" required>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Zipcode" id="emp_zipcode" formControlName="emp_zipcode" required>
+    </mat-form-field>
 
-  <mat-form-field class="example-full-width">
-    <input matInput placeholder="Mobile" id="emp_mobile" (keypress)="keyPress($event)" formControlName="emp_mobile" required>
-  </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Mobile" id="emp_mobile" (keypress)="keyPress($event)" formControlName="emp_mobile" required>
+    </mat-form-field>
 
-  <mat-radio-group id="emp_gender" formControlName="emp_gender" class="example-full-width">
-    <mat-radio-button class="radio" value="Male">Male</mat-radio-button>
-    <mat-radio-button class="radio" value="Female">Female</mat-radio-button>
-  </mat-radio-group>
+    <mat-radio-group id="emp_gender" formControlName="emp_gender" class="example-full-width">
+      <mat-radio-button class="radio" value="Male">Male</mat-radio-button>
+      <mat-radio-button class="radio" value="Female">Female</mat-radio-button>
+    </mat-radio-group>
 
-  <mat-checkbox class="example-full-width chk" id="emp_ismarried" formControlName="emp_ismarried">Is Married</mat-checkbox>
+    <mat-checkbox class="example-full-width chk" id="emp_ismarried" formControlName="emp_ismarried">Is Married</mat-checkbox>
 
-  <mat-form-field class="example-full-width">
-    <input matInput id="emp_dob" formControlName="emp_dob" [matDatepicker]="picker" placeholder="Choose a date">
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-  </mat-form-field>
-
+    <mat-form-field class="example-full-width">
+      <input matInput id="emp_dob" formControlName="emp_dob" [matDatepicker]="picker" placeholder="Choose a date">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col-md-6">
+    <input id="photo" style="display: none" type="file" onchange="readURL(this)" />
+    <img src="{{url}}/{{empImage}}" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
+      onclick="selectFile()" />
+    <img [src]="url1" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
+      onclick="selectFile()" />
+  </div>
 </form>
