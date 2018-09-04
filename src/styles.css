@@ -56,3 +56,8 @@
     /* Support for IE. */
     font-feature-settings: 'liga';
   }
+
+  th.mat-header-cell {
+    font-size: 15px;
+    font-weight: bold;
+}

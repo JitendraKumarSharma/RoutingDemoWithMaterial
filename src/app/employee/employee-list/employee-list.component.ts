@@ -106,7 +106,7 @@ export class EmployeeListComponent implements OnInit {
   selection = new SelectionModel<Employee>(true, []);
 
   ngOnInit() {
-    this.getAllEmployee();
+    this.getAllEmployee();  
   }
 
   getAllEmployee() {
@@ -151,6 +151,11 @@ export class EmployeeListComponent implements OnInit {
     //   this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
+  masterToggleOnLoad() {
+    this.isAllSelected() ?
+      this.selection.clear() :
+      this.dataSource.data.forEach(row => this.selection.select(row));
+  }
   //Get Complete Row Data
   getmsg(row) {
     if (this.flag == 0) {
