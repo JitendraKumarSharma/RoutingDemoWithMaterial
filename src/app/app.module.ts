@@ -24,7 +24,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     MatProgressSpinnerModule,
     FlashMessagesModule.forRoot(),
   ],
-  providers: [EmployeeService, CustomerService, Global],
+  providers: [Global],
   bootstrap: [AppComponent],
   entryComponents: [
     ProgressSpinnerDialogComponent

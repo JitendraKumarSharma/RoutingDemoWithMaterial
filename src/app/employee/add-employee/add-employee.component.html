@@ -11,6 +11,7 @@
     <div class="col-md-6">
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Name" id="emp_name" formControlName="emp_name" required>
+        <input type="hidden" id="emp_id" formControlName="emp_id">
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
@@ -42,7 +43,7 @@
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
-        <input matInput placeholder="Zipcode" id="emp_zipcode" formControlName="emp_zipcode" required>
+        <input matInput placeholder="Zipcode" id="emp_zipcode" maxlength="8" formControlName="emp_zipcode" required>
       </mat-form-field>
 
       <mat-form-field class="example-full-width">
@@ -63,7 +64,7 @@
       </mat-form-field>
     </div>
     <div class="col-md-6">
-      <input id="photo" style="display: none" type="file" onchange="readURL(this)" />
+      <input id="photo" style="display: none" #photo type="file" onchange="readURL(this)" />
       <img src="{{url}}/{{empImage}}" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
         onclick="selectFile()" />
       <!-- <img [src]="url1" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"

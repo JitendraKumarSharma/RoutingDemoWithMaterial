@@ -94,11 +94,10 @@ export class EmployeeListComponent implements OnInit {
   pageSize: number;
   checked1 = false;
   flag = 0;
-  tot = 0;
   cnt = 0;
 
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
-  // @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
   // debugger
 
   displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB', 'Action'];
@@ -106,16 +105,41 @@ export class EmployeeListComponent implements OnInit {
   selection = new SelectionModel<Employee>(true, []);
 
   ngOnInit() {
-    this.getAllEmployee();  
+    this.getAllEmployee().then(value => {
+      let sort1 = this.Sort1();
+      let filter1 = this.Filter1();
+    });
+  }
+
+  Sort1() {
+    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string): string => {
+      if (typeof data[sortHeaderId] === 'string') {
+        return data[sortHeaderId].toLocaleLowerCase();
+      }
+      return data[sortHeaderId];
+    };
+  }
+
+
+  Filter1() {
+    this.dataSource.filterPredicate = function (data, filter): boolean {
+      return data.Name.toLowerCase().includes(filter);
+    };
   }
 
   getAllEmployee() {
-    this.empService.getEmployeeDB()
-      .subscribe(
-        data => {
-          this.empList = data;
-          this.dataSource = new MatTableDataSource(this.empList);
-        });
+    return new Promise(resolve => {
+      this.empService.getEmployeeDB()
+        .subscribe(
+          data => {
+            this.empList = data;
+            this.dataSource = new MatTableDataSource(data);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+            this.dataSource.sortingDataAccessor = (data, header) => data[header];
+            resolve();
+          });
+    });
   }
 
   applyFilter(filterValue: string) {
@@ -226,14 +250,12 @@ export class EmployeeListComponent implements OnInit {
           .subscribe(
             data => {
               self.dialogRef.close();
-              self.empId = data; //For NodeJs API
+              self.empId = data;
               reslove(self.empId);
             });
       });
       promise.then(function (res) {
         self.getAllEmployee();
-        //self.empImage = "blank.png";
-        //self.reset();
         self._flashMessagesService.show('Employee Deleted Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
       });
     }
@@ -261,8 +283,6 @@ export class EmployeeListComponent implements OnInit {
     promoise.then(function (res) {
       self.empSelArr = [];
       self.getAllEmployee();
-      // self.empImage = "blank.png";
-      // self.reset();
       self._flashMessagesService.show('Employee Deleted Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
     });
   }
@@ -294,9 +314,7 @@ export class EmployeeListComponent implements OnInit {
         });
   }
 
-  // yourEventHandler(event) {
-  //   this.pageSize = event.pageSize;
-  //   this.cnt = 0;
-  //   this.tot = 0;
-  // }
+  yourEventHandler(event) {
+    this.pageSize = event.pageSize;
+  }
 }
