@@ -23,7 +23,7 @@ export class AddEmployeeComponent implements OnInit {
     private empService: EmployeeService,
     private dialog: MatDialog,
     private _flashMessagesService: FlashMessagesService,
-    private global: Global
+    private _global: Global
 
   ) {
     this.empForm = formBuilder.group({
@@ -60,12 +60,12 @@ export class AddEmployeeComponent implements OnInit {
   countryList: Country[];
   stateList: State[];
   private dialogRef;
-  url: string = this.global.imageUrl;
+  url: string = this._global.imageUrl;
   empImage: string = "blank.png";
 
   ngOnInit() {
     setTimeout(() => {
-      this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent)
+      this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig)
     })
     this.getAllCountry().then(value => {
       if (this.viewEmpData) {
@@ -162,7 +162,7 @@ export class AddEmployeeComponent implements OnInit {
       DOB: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1),
       EmpImage: ""
     };
-    this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent)
+    this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig)
     var self = this;
     var promise = new Promise(function (resolve, reject) {
       if (action == "Update") {
@@ -207,6 +207,7 @@ export class AddEmployeeComponent implements OnInit {
           var promoise1 = new Promise(function (resolve, reject) {
             self.empService.uploadImage(self.empForm.controls.emp_id.value, formData).subscribe(
               data => {
+                inputEl.value = "";
                 self.empImage = data;
                 resolve(self.empImage);
               }
@@ -219,25 +220,28 @@ export class AddEmployeeComponent implements OnInit {
               self.empService.sendEmail(newEmployee)
                 .subscribe(
                   data => {
-                    self._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
-                    inputEl.value = "";
-                    self.reset();
-                    self.dialogRef.close();
+                    self.resetAfterSaveUpdate(msg);
                   });
+            }
+            else {
+              self.resetAfterSaveUpdate(msg);
             }
           });
         }
         else {
-          self._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
-          inputEl.value = "";
-          self.reset();
-          self.dialogRef.close();
+          self.resetAfterSaveUpdate(msg);
         }
       }
       else {
         self._flashMessagesService.show(msg, { cssClass: 'alert-danger', timeout: 2000 });
       }
     });
+  }
+
+  resetAfterSaveUpdate(msg) {
+    this._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
+    this.reset();
+    this.dialogRef.close();
   }
 
   reset() {

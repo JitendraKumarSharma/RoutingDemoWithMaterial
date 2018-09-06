@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { isObject } from 'util';
 import { ProgressSpinnerDialogComponent } from '../../globals/progress-spinner-dialog/progress-spinner-dialog.component';
 import { FlashMessagesService } from 'angular2-flash-messages';
+import { Global } from '../../globals/global';
 
 @Component({
   selector: 'app-employee-list',
@@ -20,11 +21,11 @@ export class EmployeeListComponent implements OnInit {
 
   //v = [];
 
-
   constructor(
     private empService: EmployeeService,
     private dialog: MatDialog,
-    private _flashMessagesService: FlashMessagesService
+    private _flashMessagesService: FlashMessagesService,
+    private _global: Global
   ) {
     // let observable = new Observable(this.myObservable);
     // this.showProgressSpinnerUntilExecuted(observable);
@@ -56,31 +57,6 @@ export class EmployeeListComponent implements OnInit {
     // console.log(this.v);
   }
 
-  // myObservable(observer) {
-  //   setTimeout(() => {
-  //     observer.next("done waiting for 5 sec");
-  //     observer.complete();
-  //   }, 5000);
-  // }
-  // showProgressSpinnerUntilExecuted(observable: Observable<Object>) {
-  //   let dialogRef: MatDialogRef<ProgressSpinnerDialogComponent> = this.dialog.open(ProgressSpinnerDialogComponent, {
-  //     panelClass: 'transparent'
-  //     //disableClose: true
-  //   });
-  //   let subscription = observable.subscribe(
-  //     (response: any) => {
-  //       subscription.unsubscribe();
-  //       //handle response
-  //       console.log(response);
-  //       dialogRef.close();
-  //     },
-  //     (error) => {
-  //       subscription.unsubscribe();
-  //       //handle error
-  //       dialogRef.close();
-  //     }
-  //   );
-  // }
   public showForm = false;
   public viewEmpData: any = {};
   public loading = false;
@@ -98,7 +74,6 @@ export class EmployeeListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  // debugger
 
   displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB', 'Action'];
   dataSource: MatTableDataSource<Employee>;
@@ -203,7 +178,6 @@ export class EmployeeListComponent implements OnInit {
     }
   }
 
-
   openDialog(deleteEmp, emp): void {
     if (isObject(emp)) {
       this.flag = 1;
@@ -213,20 +187,10 @@ export class EmployeeListComponent implements OnInit {
       this.flag = 0;
     }
 
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = '500px'
-    // dialogConfig.position = {
-    //   top: '0',
-    //   left: '0'
-    // };
-
-    this.dialogRef = this.dialog.open(deleteEmp, dialogConfig);
-    // this.dialogRef.afterClosed().subscribe(result => {
-    //   console.log('The dialog was closed');
-    //   //this.animal = result;
-    // });
+    this.dialogRef = this.dialog.open(deleteEmp);
+    this.dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
   }
 
   close() {
@@ -245,7 +209,7 @@ export class EmployeeListComponent implements OnInit {
     if (this.flag == 1) {
       var self = this;
       var promise = new Promise(function (reslove, reject) {
-        self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent);
+        self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent, self._global.dialogConfig);
         self.empService.deleteEmployeeByEmpIdDB(self.empDel.EmpId)
           .subscribe(
             data => {
@@ -267,7 +231,7 @@ export class EmployeeListComponent implements OnInit {
   deleteSelectedEmployee() {
     var self = this;
     var promoise = new Promise(function (resolve, reject) {
-      self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent);
+      self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent, self._global.dialogConfig);
       for (self.cnt = 0; self.cnt < self.empSelArr.length; self.cnt++) {
         if (self.empList.find(x => x == self.empSelArr[self.cnt])) {
           self.empService.deleteEmployeeByEmpIdDB(self.empSelArr[self.cnt].EmpId)
