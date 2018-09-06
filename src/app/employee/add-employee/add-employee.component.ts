@@ -83,7 +83,7 @@ export class AddEmployeeComponent implements OnInit {
           'emp_ismarried': this.viewEmpData.IsMarried,
           'emp_dob': this.viewEmpData.DOB
         });
-        if (this.viewEmpData.EmpImage != "")
+        if (this.viewEmpData.EmpImage != null && this.viewEmpData.empImage != "")
           this.empImage = this.viewEmpData.EmpImage;
       }
       this.dialogRef.close();
@@ -162,6 +162,7 @@ export class AddEmployeeComponent implements OnInit {
       DOB: new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1),
       EmpImage: ""
     };
+    this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent)
     var self = this;
     var promise = new Promise(function (resolve, reject) {
       if (action == "Update") {
@@ -207,23 +208,30 @@ export class AddEmployeeComponent implements OnInit {
             self.empService.uploadImage(self.empForm.controls.emp_id.value, formData).subscribe(
               data => {
                 self.empImage = data;
-                resolve(data);
+                resolve(self.empImage);
               }
             );
           });
-          promoise1.then(function (res) {
+          promoise1.then(function (res: string) {
             self.empForm.controls['emp_id'].setValue(0);
-            inputEl.value = "";
             if (action == "Insert") {
-              newEmployee.EmpImage = self.empImage;
+              newEmployee.EmpImage = res;
               self.empService.sendEmail(newEmployee)
                 .subscribe(
                   data => {
+                    self._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
+                    inputEl.value = "";
+                    self.reset();
+                    self.dialogRef.close();
                   });
             }
-            self._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
-            self.reset();
           });
+        }
+        else {
+          self._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
+          inputEl.value = "";
+          self.reset();
+          self.dialogRef.close();
         }
       }
       else {
