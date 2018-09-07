@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
+import { AgmCoreModule } from '@agm/core'
 
 @NgModule({
   imports: [
@@ -38,7 +39,11 @@ import { MatNativeDateModule } from '@angular/material';
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatDialogModule
+    MatDialogModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyD-ELcW1FiUUJXUyJHS2826ibCJUxomDX4'
+    })
+    // AgmCoreModule
   ],
   declarations: [
     EmployeeListComponent,

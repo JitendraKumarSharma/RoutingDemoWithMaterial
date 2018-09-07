@@ -64,11 +64,16 @@
       </mat-form-field>
     </div>
     <div class="col-md-6">
-      <input id="photo" style="display: none" #photo type="file" onchange="readURL(this)" />
-      <img src="{{url}}/{{empImage}}" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
-        onclick="selectFile()" />
-      <!-- <img [src]="url1" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
-        onclick="selectFile()" /> -->
+      <div class="row">
+        <input id="photo" style="display: none" #photo type="file" onchange="readURL(this)" />
+        <img src="{{url}}/{{empImage}}" class="profile-img-tag" style="border: solid 1px #000; cursor: pointer;width:220px!important;height:200px!important"
+          onclick="selectFile()" />
+      </div>
+      <div class="row">
+        <agm-map [latitude]="latitude" [longitude]="longitude" (mapClick)="onChoseLocation($event)">
+          <agm-marker [latitude]="latitude" [longitude]="longitude" *ngIf="locationChosen"></agm-marker>
+        </agm-map>
+      </div>
     </div>
   </div>
 

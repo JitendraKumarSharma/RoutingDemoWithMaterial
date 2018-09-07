@@ -79,7 +79,19 @@ export class EmployeeListComponent implements OnInit {
   dataSource: MatTableDataSource<Employee>;
   selection = new SelectionModel<Employee>(true, []);
 
+
+  mapProp: any;
+
+  latitude: number;
+  longitude: number;
+
   ngOnInit() {
+    debugger
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.longitude = +pos.coords.longitude;
+      this.latitude = +pos.coords.latitude;
+    });
+
     this.getAllEmployee().then(value => {
       let sort1 = this.Sort1();
       let filter1 = this.Filter1();

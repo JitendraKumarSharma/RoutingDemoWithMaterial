@@ -111,7 +111,11 @@
     </ng-template>
     <!-- Dialog Code End -->
 
+    <agm-map [latitude]="latitude" [longitude]="longitude">
+      <agm-marker [latitude]="latitude" [longitude]="longitude" *ngIf="locationChosen"></agm-marker>
+    </agm-map>
   </form>
+
   <!-- <table style="width:100%">
     <tr *ngFor="let obj of v">
       <td>{{obj.add_on_id}}</td>

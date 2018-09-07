@@ -10,11 +10,8 @@ var myExtObject = (function () {
     }
 })(myExtObject || {})
 
-
 $(document).ready(function () {
-
 });
-
 
 selectFile = function () {
     $("#photo").click();
