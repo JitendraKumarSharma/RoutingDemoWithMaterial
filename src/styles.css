@@ -15,12 +15,6 @@
   text-align: center;
 }
 
-/* .example-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-} */
-
 .example-full-width {
   width: 100%;
 }
@@ -63,8 +57,28 @@
     font-weight: bold;
 }
 
+/* Css For Filter Option Start */
 .search {
   display: block!important;
   width: 30%!important;
   padding-left: 15px!important;
 }
+
+.search input{
+  padding-left: 40px;
+    padding-right: 40px;
+}
+
+.search-icon{
+  position: absolute;
+    top: -4px;
+    pointer-events: none;
+}
+
+.close-icon{
+position: absolute;
+    right: 5px;
+    top: -2px;
+}
+
+/* Css For Filter Option End */

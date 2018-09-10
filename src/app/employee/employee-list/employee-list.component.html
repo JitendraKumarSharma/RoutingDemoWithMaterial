@@ -10,8 +10,14 @@
 
     <div class="mat-elevation-z8">
       <mat-form-field class="search">
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        <label class="label-icon">
+          <i class="material-icons search-icon">search</i>
+        </label>
+        <i class="material-icons close-icon" *ngIf="hasFilterValue" (click)="clearFilterSubscriber()">close</i>
+        <input matInput #filterText (keyup)="applyFilter($event.target.value)">
+       
       </mat-form-field>
+
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <!-- Checkbox Column -->
