@@ -136,8 +136,6 @@ export class EmployeeListComponent implements OnInit {
   }
 
   sortData(event) {
-
-
     console.log(event);
   }
 
