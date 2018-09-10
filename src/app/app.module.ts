@@ -10,6 +10,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressSpinnerDialogComponent } from './globals/progress-spinner-dialog/progress-spinner-dialog.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
+import { AgmCoreModule } from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -17,6 +18,10 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
     ProgressSpinnerDialogComponent,
   ],
   imports: [
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyD-ELcW1FiUUJXUyJHS2826ibCJUxomDX4",
+      libraries: ["places"]
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
