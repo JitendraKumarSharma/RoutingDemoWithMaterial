@@ -10,8 +10,14 @@
 
     <div class="mat-elevation-z8">
       <mat-form-field class="search">
-        <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+        <label class="label-icon">
+          <i class="material-icons search-icon">search</i>
+        </label>
+        <i class="material-icons close-icon" *ngIf="hasFilterValue" (click)="clearFilterSubscriber()">close</i>
+        <input matInput #filterText (keyup)="applyFilter($event.target.value)">
+       
       </mat-form-field>
+
       <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
 
         <!-- Checkbox Column -->
@@ -111,7 +117,11 @@
     </ng-template>
     <!-- Dialog Code End -->
 
+    <agm-map [latitude]="latitude" [longitude]="longitude">
+      <agm-marker [latitude]="latitude" [longitude]="longitude" *ngIf="locationChosen"></agm-marker>
+    </agm-map>
   </form>
+
   <!-- <table style="width:100%">
     <tr *ngFor="let obj of v">
       <td>{{obj.add_on_id}}</td>

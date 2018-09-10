@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../employee';
 import { MatPaginator, MatTableDataSource, MatSort, MatFooterRow } from '@angular/material';
@@ -65,6 +65,7 @@ export class EmployeeListComponent implements OnInit {
   empDel: Employee;
   empId: number;
   private dialogRef;
+  hasFilterValue: boolean = false;
 
   pageSizes = [5, 10, 20];
   pageSize: number;
@@ -74,12 +75,24 @@ export class EmployeeListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild("filterText") elFilter: ElementRef;
 
   displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB', 'Action'];
   dataSource: MatTableDataSource<Employee>;
   selection = new SelectionModel<Employee>(true, []);
 
+
+  mapProp: any;
+
+  latitude: number;
+  longitude: number;
+
   ngOnInit() {
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.longitude = +pos.coords.longitude;
+      this.latitude = +pos.coords.latitude;
+    });
+
     this.getAllEmployee().then(value => {
       let sort1 = this.Sort1();
       let filter1 = this.Filter1();
@@ -94,7 +107,6 @@ export class EmployeeListComponent implements OnInit {
       return data[sortHeaderId];
     };
   }
-
 
   Filter1() {
     this.dataSource.filterPredicate = function (data, filter): boolean {
@@ -119,9 +131,13 @@ export class EmployeeListComponent implements OnInit {
 
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.elFilter.nativeElement.value != "")
+      this.hasFilterValue = true;
   }
 
   sortData(event) {
+
+
     console.log(event);
   }
 
@@ -280,5 +296,15 @@ export class EmployeeListComponent implements OnInit {
 
   yourEventHandler(event) {
     this.pageSize = event.pageSize;
+  }
+
+
+  clearFilterSubscriber(): void {
+    this.elFilter.nativeElement.value = "";
+    this.hasFilterValue = false;
+    this.getAllEmployee().then(value => {
+      let sort1 = this.Sort1();
+      let filter1 = this.Filter1();
+    });
   }
 }

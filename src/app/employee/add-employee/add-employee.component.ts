@@ -63,7 +63,15 @@ export class AddEmployeeComponent implements OnInit {
   url: string = this._global.imageUrl;
   empImage: string = "blank.png";
 
+  latitude: number;
+  longitude: number;
+  locationChosen = false;
+
   ngOnInit() {
+    navigator.geolocation.getCurrentPosition(pos => {
+      this.longitude = +pos.coords.longitude;
+      this.latitude = +pos.coords.latitude;
+    });
     setTimeout(() => {
       this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig)
     })
@@ -299,5 +307,12 @@ export class AddEmployeeComponent implements OnInit {
             }
           });
     });
+  }
+
+  onChoseLocation(event) {
+    console.log(event);
+    this.latitude = event.coords.lat;
+    this.longitude = event.coords.lng;
+    this.locationChosen = true;
   }
 }
