@@ -73,6 +73,10 @@ export class EmployeeListComponent implements OnInit {
   flag = 0;
   cnt = 0;
 
+  color = 'accent';
+  checked = false;
+  disabled = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild("filterText") elFilter: ElementRef;
@@ -127,6 +131,28 @@ export class EmployeeListComponent implements OnInit {
             resolve();
           });
     });
+  }
+
+  isMarried(event, row) {
+    row.IsMarried = event.checked == true ? true : false;
+    this.updateMaritalStatus(row);
+    console.log(event);
+  }
+
+  updateMaritalStatus(row) {
+    let newEmployee: Employee;
+    newEmployee = row;
+    this.empService.updateEmployeeDB(newEmployee)
+    .subscribe(
+            data => {
+              if (data == 0) {
+                this._flashMessagesService.show('Some Error Occured!!', { cssClass: 'alert-danger', timeout: 2000 });
+              }
+              else {
+                this._flashMessagesService.show('Marital Status Updated Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
+              }
+            });
+    return status;
   }
 
   applyFilter(filterValue: string) {
@@ -295,7 +321,6 @@ export class EmployeeListComponent implements OnInit {
   yourEventHandler(event) {
     this.pageSize = event.pageSize;
   }
-
 
   clearFilterSubscriber(): void {
     this.elFilter.nativeElement.value = "";

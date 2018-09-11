@@ -82,3 +82,11 @@ position: absolute;
 }
 
 /* Css For Filter Option End */
+
+mat-paginator{
+  padding-right: 26%;
+}
+
+.overfloaw{
+  overflow: auto;
+}

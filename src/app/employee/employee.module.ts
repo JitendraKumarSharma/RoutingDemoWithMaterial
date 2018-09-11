@@ -17,7 +17,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material';
-import { AgmCoreModule } from '@agm/core'
+import { AgmCoreModule } from '@agm/core';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   imports: [
@@ -42,8 +43,8 @@ import { AgmCoreModule } from '@agm/core'
     MatDialogModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyD-ELcW1FiUUJXUyJHS2826ibCJUxomDX4'
-    })
-    // AgmCoreModule
+    }),
+    MatSlideToggleModule
   ],
   declarations: [
     EmployeeListComponent,
