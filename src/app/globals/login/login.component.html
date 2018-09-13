@@ -1,0 +1,26 @@
+<form [formGroup]="loginForm">
+  <div class="row button-title">
+    <div class="col-md-12">
+      <h4 class="float-left">Login</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Email" id="user_email" formControlName="user_email" required>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Password" id="user_password" formControlName="user_password" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="float-left" (click)="login()" type="submit" [disabled]="!loginForm.valid">Login</button>
+      <button mat-raised-button color="primary" class="float-left" (click)="register()">Register</button>
+
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+</form>

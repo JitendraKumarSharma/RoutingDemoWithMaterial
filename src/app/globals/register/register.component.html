@@ -1,0 +1,40 @@
+<form [formGroup]="regForm" enctype="multipart/form-data">
+  <div class="row button-title">
+    <div class="col-md-12">
+      <h4 class="float-left">User Registration</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Username" id="user_name" formControlName="user_name" required>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Email" id="user_email" formControlName="user_email" required>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type="password" placeholder="Password" id="user_password" formControlName="user_password" required>
+        <mat-error *ngIf="regForm.hasError('required', 'password')">
+          Please enter your newpassword
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Confirm password" id="user_conPassword" formControlName="user_conPassword" [errorStateMatcher]="matcher"
+          required>
+        <mat-error *ngIf="regForm.hasError('notSame')">
+          Passwords do not match
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="float-left" (click)="register()" type="submit" [disabled]="!regForm.valid">Register</button>
+      <button mat-raised-button color="primary" class="float-left" (click)="login()">Login</button>
+
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+</form>
