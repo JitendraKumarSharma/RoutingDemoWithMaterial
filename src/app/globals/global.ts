@@ -1,5 +1,6 @@
 import { MatDialogConfig } from '@angular/material/dialog';
 import { OnInit } from '@angular/core';
+import { AbstractControl } from "@angular/forms";
 
 export class Global {
     //For ASP.Net WebAPI
@@ -17,4 +18,20 @@ export class Global {
         //   left: '0'
         // };
     }
+    //export class PasswordValidation {
+    static MatchPassword(AC: AbstractControl) {
+        debugger
+        let password = AC.get("password").value; // to get value in input tag
+        let confirm_password = AC.get("confirm_password").value; // to get value in input tag
+        if (password != confirm_password) {
+            AC.get("confirm_password").setErrors({ MatchPassword: true });
+        } else {
+            return null;
+        }
+        //let cp = AC.get("confirm_password");
+        //cp.setErrors({ incorrect: false });
+        //formData.form.controls['email'].setErrors({'incorrect': true});
+    }
+    //}
+
 }
