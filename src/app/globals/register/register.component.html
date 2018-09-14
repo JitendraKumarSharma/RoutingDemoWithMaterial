@@ -1,0 +1,30 @@
+<form [formGroup]="regForm" enctype="multipart/form-data">
+  <div class="row button-title">
+    <div class="col-md-12">
+      <h4 class="float-left">User Registration</h4>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Email" id="user_email" formControlName="user_email" required>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Password" id="password" formControlName="password" required>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input matInput type="password" placeholder="Confirm Password" id="confirm_password" formControlName="confirm_password" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" class="float-left" (click)="register()" type="submit" [disabled]="!regForm.valid">Register</button>
+      <button mat-raised-button color="primary" class="float-left" (click)="login()">Login</button>
+
+    </div>
+    <div class="col-md-3"></div>
+  </div>
+
+</form>

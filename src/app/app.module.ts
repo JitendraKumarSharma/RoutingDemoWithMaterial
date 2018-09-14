@@ -10,21 +10,36 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ProgressSpinnerDialogComponent } from './globals/progress-spinner-dialog/progress-spinner-dialog.component';
 import { FlashMessagesModule } from 'angular2-flash-messages';
-
+import { AgmCoreModule } from '@agm/core';
+import { LoginComponent } from './globals/login/login.component';
+import { RegisterComponent } from './globals/register/register.component';
+import { MatInputModule } from '@angular/material';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 @NgModule({
   declarations: [
     AppComponent,
     ProgressSpinnerDialogComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
+    AgmCoreModule.forRoot({
+      apiKey: "AIzaSyD-ELcW1FiUUJXUyJHS2826ibCJUxomDX4",
+      libraries: ["places"]
+    }),
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     MatProgressSpinnerModule,
     FlashMessagesModule.forRoot(),
+    MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule
   ],
-  providers: [Global],
+  providers: [Global, EmployeeService],
   bootstrap: [AppComponent],
   entryComponents: [
     ProgressSpinnerDialogComponent

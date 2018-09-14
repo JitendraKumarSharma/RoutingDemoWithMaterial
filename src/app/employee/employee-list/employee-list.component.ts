@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { EmployeeService } from '../../services/employee.service';
 import { Employee } from '../employee';
 import { MatPaginator, MatTableDataSource, MatSort, MatFooterRow } from '@angular/material';
@@ -65,6 +65,7 @@ export class EmployeeListComponent implements OnInit {
   empDel: Employee;
   empId: number;
   private dialogRef;
+  hasFilterValue: boolean = false;
 
   pageSizes = [5, 10, 20];
   pageSize: number;
@@ -72,8 +73,13 @@ export class EmployeeListComponent implements OnInit {
   flag = 0;
   cnt = 0;
 
+  color = 'accent';
+  checked = false;
+  disabled = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+  @ViewChild("filterText") elFilter: ElementRef;
 
   displayedColumns: string[] = ['Select', 'Name', 'Email', 'Age', 'City', 'ZipCode', 'Mobile', 'Gender', 'IsMarried', 'DOB', 'Action'];
   dataSource: MatTableDataSource<Employee>;
@@ -86,7 +92,6 @@ export class EmployeeListComponent implements OnInit {
   longitude: number;
 
   ngOnInit() {
-    debugger
     navigator.geolocation.getCurrentPosition(pos => {
       this.longitude = +pos.coords.longitude;
       this.latitude = +pos.coords.latitude;
@@ -106,7 +111,6 @@ export class EmployeeListComponent implements OnInit {
       return data[sortHeaderId];
     };
   }
-
 
   Filter1() {
     this.dataSource.filterPredicate = function (data, filter): boolean {
@@ -129,8 +133,32 @@ export class EmployeeListComponent implements OnInit {
     });
   }
 
+  isMarried(event, row) {
+    row.IsMarried = event.checked == true ? true : false;
+    this.updateMaritalStatus(row);
+    console.log(event);
+  }
+
+  updateMaritalStatus(row) {
+    let newEmployee: Employee;
+    newEmployee = row;
+    this.empService.updateEmployeeDB(newEmployee)
+    .subscribe(
+            data => {
+              if (data == 0) {
+                this._flashMessagesService.show('Some Error Occured!!', { cssClass: 'alert-danger', timeout: 2000 });
+              }
+              else {
+                this._flashMessagesService.show('Marital Status Updated Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
+              }
+            });
+    return status;
+  }
+
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.elFilter.nativeElement.value != "")
+      this.hasFilterValue = true;
   }
 
   sortData(event) {
@@ -292,5 +320,14 @@ export class EmployeeListComponent implements OnInit {
 
   yourEventHandler(event) {
     this.pageSize = event.pageSize;
+  }
+
+  clearFilterSubscriber(): void {
+    this.elFilter.nativeElement.value = "";
+    this.hasFilterValue = false;
+    this.getAllEmployee().then(value => {
+      let sort1 = this.Sort1();
+      let filter1 = this.Filter1();
+    });
   }
 }
