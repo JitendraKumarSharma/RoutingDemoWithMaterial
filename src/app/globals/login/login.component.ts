@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
+  public errorMsg: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -23,8 +24,8 @@ export class LoginComponent implements OnInit {
   ) {
     this.loginForm = formBuilder.group(
       {
-        user_email: [null, Validators.email],
-        user_password: [null, Validators.required],
+        email: [null, Validators.email],
+        password: [null, Validators.required],
       }
     );
   }
@@ -33,10 +34,35 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-
+    debugger
+    let email = this.loginForm.controls.email.value;
+    let password = this.loginForm.controls.password.value;
+    this.empService.loginUser(email, password)
+      .subscribe(
+        data => {
+          this.router.navigate(['employee']);
+          // this._flashMessagesService.show("User Login Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
+          // this.reset();
+        },
+        error => {
+          this.errorMsg = error.error.error_description;
+          this._flashMessagesService.show(this.errorMsg, { cssClass: 'alert-danger', timeout: 2000 });
+        }
+      );
   }
 
   register() {
     this.router.navigate(['register']);
   }
+
+  reset() {
+    this.loginForm = this.formBuilder.group(
+      {
+        email: [null, Validators.email],
+        password: [null, Validators.required],
+      }
+    );
+    return false;
+  }
+
 }

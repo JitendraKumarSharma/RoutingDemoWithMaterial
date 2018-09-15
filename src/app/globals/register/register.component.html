@@ -20,8 +20,9 @@
         <input matInput type="password" placeholder="Confirm Password" id="confirm_password" formControlName="confirm_password" required>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="float-left" (click)="register()" type="submit" [disabled]="!regForm.valid">Register</button>
+      <button mat-raised-button color="primary" id="btnRegister" class="float-left" (click)="register()" type="submit" [disabled]="!regForm.valid">Register</button>
       <button mat-raised-button color="primary" class="float-left" (click)="login()">Login</button>
+      <button mat-raised-button color="primary" class="float-left" (click)="reset()">Reset</button>
 
     </div>
     <div class="col-md-3"></div>
