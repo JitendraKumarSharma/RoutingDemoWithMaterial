@@ -10,6 +10,7 @@ import { isObject } from 'util';
 import { ProgressSpinnerDialogComponent } from '../../globals/progress-spinner-dialog/progress-spinner-dialog.component';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Global } from '../../globals/global';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-employee-list',
@@ -25,8 +26,10 @@ export class EmployeeListComponent implements OnInit {
     private empService: EmployeeService,
     private dialog: MatDialog,
     private _flashMessagesService: FlashMessagesService,
-    private _global: Global
+    private _global: Global,
+    private router: Router
   ) {
+    _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     // let observable = new Observable(this.myObservable);
     // this.showProgressSpinnerUntilExecuted(observable);
     // this.v = [{
@@ -122,14 +125,20 @@ export class EmployeeListComponent implements OnInit {
     return new Promise(resolve => {
       this.empService.getEmployeeDB()
         .subscribe(
-          data => {
-            this.empList = data;
-            this.dataSource = new MatTableDataSource(data);
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.sort = this.sort;
-            this.dataSource.sortingDataAccessor = (data, header) => data[header];
-            resolve();
-          });
+        data => {
+          this.empList = data;
+          this.dataSource = new MatTableDataSource(data);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+          this.dataSource.sortingDataAccessor = (data, header) => data[header];
+          resolve();
+        },
+        error => {
+          if (error.status == 401) {
+            this.router.navigate(['login']);
+            this._flashMessagesService.show('Please Login!!', { cssClass: 'alert-danger', timeout: 2000 });
+          }
+        });
     });
   }
 
@@ -143,15 +152,15 @@ export class EmployeeListComponent implements OnInit {
     let newEmployee: Employee;
     newEmployee = row;
     this.empService.updateEmployeeDB(newEmployee)
-    .subscribe(
-            data => {
-              if (data == 0) {
-                this._flashMessagesService.show('Some Error Occured!!', { cssClass: 'alert-danger', timeout: 2000 });
-              }
-              else {
-                this._flashMessagesService.show('Marital Status Updated Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
-              }
-            });
+      .subscribe(
+      data => {
+        if (data == 0) {
+          this._flashMessagesService.show('Some Error Occured!!', { cssClass: 'alert-danger', timeout: 2000 });
+        }
+        else {
+          this._flashMessagesService.show('Marital Status Updated Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
+        }
+      });
     return status;
   }
 
@@ -252,11 +261,11 @@ export class EmployeeListComponent implements OnInit {
         self.dialogRef = self.dialog.open(ProgressSpinnerDialogComponent, self._global.dialogConfig);
         self.empService.deleteEmployeeByEmpIdDB(self.empDel.EmpId)
           .subscribe(
-            data => {
-              self.dialogRef.close();
-              self.empId = data;
-              reslove(self.empId);
-            });
+          data => {
+            self.dialogRef.close();
+            self.empId = data;
+            reslove(self.empId);
+          });
       });
       promise.then(function (res) {
         self.getAllEmployee();
@@ -276,11 +285,11 @@ export class EmployeeListComponent implements OnInit {
         if (self.empList.find(x => x == self.empSelArr[self.cnt])) {
           self.empService.deleteEmployeeByEmpIdDB(self.empSelArr[self.cnt].EmpId)
             .subscribe(
-              data => {
-                self.dialogRef.close();
-                self.empId = data;
-                resolve(self.empId);
-              });
+            data => {
+              self.dialogRef.close();
+              self.empId = data;
+              resolve(self.empId);
+            });
         }
       }
     });
@@ -313,9 +322,9 @@ export class EmployeeListComponent implements OnInit {
   getEmployeeDetail(emp: Employee) {
     this.empService.getEmployeeByEmpIdDB(emp.EmpId)
       .subscribe(
-        data => {
-          this.viewEmpData = data[0];
-        });
+      data => {
+        this.viewEmpData = data[0];
+      });
   }
 
   yourEventHandler(event) {

@@ -26,27 +26,32 @@ export class EmployeeService {
   }
 
   getEmployeeDB() {
-    return this.http.get<Employee[]>(this.global.apiUrl + "/employees")
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.get<Employee[]>(this.global.apiUrl + "/employees", { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }
 
   getEmployeeByEmpIdDB(Id: number) {
-    return this.http.get<Employee[]>(this.global.apiUrl + "/employees/" + Id)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.get<Employee[]>(this.global.apiUrl + "/employees/" + Id, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }
 
   getAllCountry() {
-    return this.http.get<Country[]>(this.global.apiUrl + "/getAllCountry")
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.get<Country[]>(this.global.apiUrl + "/getAllCountry", { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }
 
   getStateByCountry(Id: number) {
-    return this.http.get<State[]>(this.global.apiUrl + "/getStateByCountry/" + Id)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.get<State[]>(this.global.apiUrl + "/getStateByCountry/" + Id, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }
 
   deleteEmployeeByEmpIdDB(Id: number) {
-    return this.http.delete<number>(this.global.apiUrl + "/employees/" + Id)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.delete<number>(this.global.apiUrl + "/employees/" + Id, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }
 
@@ -81,8 +86,8 @@ export class EmployeeService {
     // formData.append('DOB = new Date(req.body.params.emp.DOB);
     // formData.append('EmpImage = req.body.params.emp.EmpImage;
     //return this.http.post(this.global.apiUrl + "/employees", { params: { emp: employee } }) // For NodeJs API
-
-    return this.http.post<number>(this.global.apiUrl + "/Employees", employee)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.post<number>(this.global.apiUrl + "/Employees", employee, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
 
     ////Used in Angular 5
@@ -108,8 +113,8 @@ export class EmployeeService {
       EmpImage: employee.EmpImage
     }
     //return this.http.put(this.global.apiUrl + "/employees", { params: { emp: employee } }) // For NodeJs API
-
-    return this.http.put<number>(this.global.apiUrl + "/Employees", body)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.put<number>(this.global.apiUrl + "/Employees", body, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
 
     ////Used in Angular 5
@@ -132,8 +137,8 @@ export class EmployeeService {
     // formData.append('photo', inputEl.files.item(0));
     // formData.append('id', id === undefined || id == null ? '0' : id.toString());
     // //call the angular http method
-
-    return this.http.post<string>(this.global.apiUrl + "/Upload", formData)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.post<string>(this.global.apiUrl + "/Upload", formData, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
 
     ////Used in Angular 5
@@ -147,8 +152,8 @@ export class EmployeeService {
 
   sendEmail(employee: Employee) {
     //return this.http.post(this.global.apiUrl + "/SendEmail", { params: { emp: employee } }) //For NodeJs API
-
-    return this.http.post<string>(this.global.apiUrl + "/SendEmail", employee)
+    var reqHeader = new HttpHeaders({ 'Authorization': 'Bearer ' + localStorage.getItem('access_token') });
+    return this.http.post<string>(this.global.apiUrl + "/SendEmail", employee, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
 
     ////Used in Angular 5
@@ -170,7 +175,7 @@ export class EmployeeService {
 
   loginUser(username: string, password: string) {
     var body = "username=" + username + "&password=" + password + "&grant_type=password";
-    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', });
+    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(this.global.apiLogin + "/token", body, { headers: reqHeader })
       .pipe(catchError(this.errorHandler));
   }

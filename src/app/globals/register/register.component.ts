@@ -22,7 +22,9 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private empService: EmployeeService,
     private _flashMessagesService: FlashMessagesService,
+    private _global: Global
   ) {
+    _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.reset();
   }
 
@@ -39,21 +41,21 @@ export class RegisterComponent implements OnInit {
     let confirmPassword = this.regForm.controls.confirm_password.value;
     this.empService.registerUser(email, password, confirmPassword)
       .subscribe(
-        data => {
-          this._flashMessagesService.show("User Registered Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
-          this.reset();
-        },
-        error => {
-          this.errorMsg = error;
-          let mappedError;
-          for (var x in this.errorMsg.error.ModelState) {
-            mappedError = Object.keys(this.errorMsg.error.ModelState[x]).map(key => ({ 'id': key, 'val': this.errorMsg.error.ModelState[x][key] }));
-            this.errorMsg.error.ModelState[x] = mappedError;
-          }
-          for (var err in mappedError) {
-            this._flashMessagesService.show(mappedError[err].val, { cssClass: 'alert-danger', timeout: 2000 });
-          }
+      data => {
+        this._flashMessagesService.show("User Registered Successfully!!", { cssClass: 'alert-success', timeout: 3000 });
+        this.reset();
+      },
+      error => {
+        this.errorMsg = error;
+        let mappedError;
+        for (var x in this.errorMsg.error.ModelState) {
+          mappedError = Object.keys(this.errorMsg.error.ModelState[x]).map(key => ({ 'id': key, 'val': this.errorMsg.error.ModelState[x][key] }));
+          this.errorMsg.error.ModelState[x] = mappedError;
         }
+        for (var err in mappedError) {
+          this._flashMessagesService.show(mappedError[err].val, { cssClass: 'alert-danger', timeout: 5000 });
+        }
+      }
       );
   }
 

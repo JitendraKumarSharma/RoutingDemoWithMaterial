@@ -22,6 +22,7 @@ export class LoginComponent implements OnInit {
     private _global: Global,
     private router: Router
   ) {
+    _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.loginForm = formBuilder.group(
       {
         email: [null, Validators.email],
@@ -39,15 +40,18 @@ export class LoginComponent implements OnInit {
     let password = this.loginForm.controls.password.value;
     this.empService.loginUser(email, password)
       .subscribe(
-        data => {
-          this.router.navigate(['employee']);
-          // this._flashMessagesService.show("User Login Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
-          // this.reset();
-        },
-        error => {
-          this.errorMsg = error.error.error_description;
-          this._flashMessagesService.show(this.errorMsg, { cssClass: 'alert-danger', timeout: 2000 });
-        }
+      data => {
+        debugger
+        localStorage.setItem('access_token', data.access_token);
+        localStorage.setItem('userName', data.userName);
+        this.router.navigate(['employee']);
+        // this._flashMessagesService.show("User Login Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
+        // this.reset();
+      },
+      error => {
+        this.errorMsg = error.error.error_description;
+        this._flashMessagesService.show(this.errorMsg, { cssClass: 'alert-danger', timeout: 2000 });
+      }
       );
   }
 

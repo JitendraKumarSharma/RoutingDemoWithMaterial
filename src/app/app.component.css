@@ -25,8 +25,12 @@ li a {
 
 li a:hover:not(.active) {
     background-color: #111;
+    cursor: pointer;
 }
 
+li.logout:hover{
+    color: white;
+}
 .active {
     background-color: #4CAF50;
 }

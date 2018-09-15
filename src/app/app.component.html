@@ -2,17 +2,20 @@
 
 <ul>
   <li>
-    <a class="active" routerLink="/employee" routerLinkActive="active">Employee</a>
+    <a routerLink="/employee" routerLinkActive="active">Employee</a>
   </li>
   <li>
     <a routerLink="/customer" routerLinkActive="active">Customer</a>
+  </li>
+  <li class="float-right logout">
+    <a (click)="logoff()" routerLinkActive="active" *ngIf="_global.isUserLoggedIn==true">Log Off</a>
   </li>
 </ul>
 
 
 <div>
   <div>
-    
+
     <!-- <div class="container">
       <h1>Angular 2 + Google Maps Places Autocomplete</h1>
       <div class="form-group">

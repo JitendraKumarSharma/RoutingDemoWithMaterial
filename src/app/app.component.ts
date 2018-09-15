@@ -2,6 +2,8 @@ import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
+import { Router } from '@angular/router';
+import { Global } from 'src/app/globals/global';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +11,24 @@ import { MapsAPILoader } from '@agm/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+
+  constructor(
+    private router: Router,
+    private _global: Global
+  ) {
+    debugger
+    _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
+  }
   color = 'primary';
   mode = 'indeterminate';
   value = 50;
   showProgress = true;
   title = 'RoutingDemo';
 
+  logoff() {
+    localStorage.removeItem('access_token');
+    this.router.navigate(['login']);
+  }
   // public latitude: number;
   // public longitude: number;
   // public searchControl: FormControl;

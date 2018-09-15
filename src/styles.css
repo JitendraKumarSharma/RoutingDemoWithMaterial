@@ -2,22 +2,55 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "src/assets/css/bootstrap.css";
 
-.mat-raised-button{
-  margin: 0px 5px!important;
+.mat-card{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding: 0px!important;
 }
 
-.button-title
+.actionbtn
 {
-  margin: 10px;
+  float: right!important;
+  top: -37px!important;
 }
 
-.center{
-  text-align: center;
+.example-table{
+  width: 100%;
 }
 
 .example-full-width {
   width: 100%;
 }
+
+agm-map{
+  height: 300px;
+  width: 500px;
+}
+
+/* Css For Filter Option Start */
+.search {
+  display: block!important;
+  width: 30%!important;
+  padding-left: 15px!important;
+}
+
+.search input{
+  padding-left: 40px;
+    padding-right: 40px;
+}
+
+.search-icon{
+  position: absolute;
+    top: -4px;
+    pointer-events: none;
+}
+
+.close-icon{
+    position: absolute;
+    right: 5px;
+    top: -2px;
+}
+/* Css For Filter Option End */
 
 .chk
 {
@@ -57,36 +90,38 @@
     font-weight: bold;
 }
 
-/* Css For Filter Option Start */
-.search {
-  display: block!important;
-  width: 30%!important;
-  padding-left: 15px!important;
+.mat-raised-button{
+  margin: 0px 5px!important;
 }
 
-.search input{
-  padding-left: 40px;
-    padding-right: 40px;
-}
-
-.search-icon{
-  position: absolute;
-    top: -4px;
-    pointer-events: none;
-}
-
-.close-icon{
-position: absolute;
-    right: 5px;
-    top: -2px;
-}
-
-/* Css For Filter Option End */
-
-mat-paginator{
-  padding-right: 26%;
+.row{
+  padding: 10px;
 }
 
 .overfloaw{
   overflow: auto;
 }
+
+mat-paginator{
+  padding-right: 26%;
+}
+
+/* 
+  td.mat-column-star {
+    width: 20px;
+    padding-right: 8px;
+  }
+  
+  th.mat-column-position, td.mat-column-position {
+    padding-left: 8px;
+  }
+  
+  .mat-table-sticky:first-child {
+    border-right: 1px solid #e0e0e0;
+  }
+  
+  .mat-table-sticky:last-child {
+    border-left: 1px solid #e0e0e0;
+  }
+
+   */

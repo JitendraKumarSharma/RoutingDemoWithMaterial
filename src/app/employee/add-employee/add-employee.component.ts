@@ -26,6 +26,7 @@ export class AddEmployeeComponent implements OnInit {
     private _global: Global
 
   ) {
+    _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.reset();
   }
 

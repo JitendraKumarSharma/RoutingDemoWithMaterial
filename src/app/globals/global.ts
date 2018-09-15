@@ -7,6 +7,7 @@ export class Global {
     public apiLogin: string = "http://localhost:2321";
     public apiUrl: string = "http://localhost:2321/api";
     public imageUrl: string = "http://localhost:2321/UploadFile";
+    public isUserLoggedIn: boolean = false;
 
     public dialogConfig;
     constructor() {
