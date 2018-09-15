@@ -26,31 +26,7 @@ export class AddEmployeeComponent implements OnInit {
     private _global: Global
 
   ) {
-    this.empForm = formBuilder.group({
-      emp_id: [null, Validators.nullValidator],
-      emp_name: [null, Validators.required],
-      //site_url: [null, Validators.pattern('^(http[s]?:\\/\\/){0,1}(www\\.){0,1}[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,5}[\\.]{0,1}$')],
-      emp_age: [null, Validators.required],
-      //last_name: [null, Validators.required],
-      //middle_name: [null],
-      emp_email: [null, Validators.email],
-      emp_country: ['', Validators.required],
-      emp_state: ['', Validators.required],
-      emp_city: [null, Validators.required],
-      emp_zipcode: [null, Validators.required],
-      emp_mobile: [null, Validators.required],
-      emp_gender: [null, Validators.required],
-      emp_ismarried: [null, Validators.nullValidator],
-      emp_dob: [null, Validators.required]
-      //phone: [null, Validators.pattern("[0-9]{10}")],
-      //username: [null, Validators.minLength(5)],
-      //password: [null, Validators.minLength(8)],
-      //confirm_password: [null, Validators.required]
-    }
-      // , {
-      //     validator: PasswordValidation.MatchPassword // your validation method
-      // }
-    );
+    this.reset();
   }
 
   @Input() viewEmpData: any;
@@ -247,16 +223,43 @@ export class AddEmployeeComponent implements OnInit {
   }
 
   resetAfterSaveUpdate(msg) {
+    debugger
     this._flashMessagesService.show(msg, { cssClass: 'alert-success', timeout: 2000 });
-    this.reset();
     this.dialogRef.close();
+    this.reset();
   }
 
   reset() {
+    this.viewEmpData = null;
     this.empImage = "blank.png";
     myExtObject.resetImage(this.url, this.empImage);
-    this.empForm.reset();
     this.getAllCountry();
+    this.empForm = this.formBuilder.group({
+      emp_id: [null, Validators.nullValidator],
+      emp_name: [null, Validators.required],
+      //site_url: [null, Validators.pattern('^(http[s]?:\\/\\/){0,1}(www\\.){0,1}[a-zA-Z0-9\\.\\-]+\\.[a-zA-Z]{2,5}[\\.]{0,1}$')],
+      emp_age: [null, Validators.required],
+      //last_name: [null, Validators.required],
+      //middle_name: [null],
+      emp_email: [null, Validators.email],
+      emp_country: ['', Validators.required],
+      emp_state: ['', Validators.required],
+      emp_city: [null, Validators.required],
+      emp_zipcode: [null, Validators.required],
+      emp_mobile: [null, Validators.required],
+      emp_gender: [null, Validators.required],
+      emp_ismarried: [null, Validators.nullValidator],
+      emp_dob: [null, Validators.required]
+      //phone: [null, Validators.pattern("[0-9]{10}")],
+      //username: [null, Validators.minLength(5)],
+      //password: [null, Validators.minLength(8)],
+      //confirm_password: [null, Validators.required]
+    }
+      // , {
+      //     validator: PasswordValidation.MatchPassword // your validation method
+      // }
+    );
+    return false;
   }
 
   validateAllFormFields(formGroup: FormGroup) {
@@ -277,7 +280,7 @@ export class AddEmployeeComponent implements OnInit {
         .subscribe(
           data => {
             this.countryList = data;
-            if (this.viewEmpData !== undefined && this.viewEmpData.CountryId > 0) {
+            if (this.viewEmpData != null && this.viewEmpData !== undefined && this.viewEmpData.CountryId > 0) {
               this.getStateByCountry(1, this.viewEmpData.CountryId).then(value => {
                 resolve();
               });
@@ -298,7 +301,7 @@ export class AddEmployeeComponent implements OnInit {
         .subscribe(
           data => {
             this.stateList = data;
-            if (this.viewEmpData !== undefined && this.viewEmpData.StateId > 0 && flag == 1) {
+            if (this.viewEmpData != null && this.viewEmpData !== undefined && this.viewEmpData.StateId > 0 && flag == 1) {
               resolve();
             }
             else {

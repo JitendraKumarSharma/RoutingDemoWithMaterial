@@ -3,7 +3,7 @@ import { Global } from '../globals/global';
 import { Employee } from '../employee/employee';
 import { Country } from '../globals/country';
 
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { Observable } from 'rxjs';
@@ -155,5 +155,23 @@ export class EmployeeService {
     // return this.http.post(this.global.apiUrl + "/SendEmail", employee).pipe(
     //     map((res: Response) => res.json()));
     ////End
+  }
+
+  registerUser(email: string, password: string, confirmPassword: string) {
+    var body = {
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    }
+    return this.http.post<any>(this.global.apiUrl + "/account/register", body)
+      .pipe(catchError(this.errorHandler));
+
+  }
+
+  loginUser(username: string, password: string) {
+    var body = "username=" + username + "&password=" + password + "&grant_type=password";
+    var reqHeader = new HttpHeaders({ 'Content-Type': 'application/json', });
+    return this.http.post<any>(this.global.apiLogin + "/token", body, { headers: reqHeader })
+      .pipe(catchError(this.errorHandler));
   }
 }
