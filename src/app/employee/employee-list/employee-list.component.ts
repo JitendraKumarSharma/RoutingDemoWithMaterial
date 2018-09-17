@@ -151,14 +151,17 @@ export class EmployeeListComponent implements OnInit {
   updateMaritalStatus(row) {
     let newEmployee: Employee;
     newEmployee = row;
+    this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig);
     this.empService.updateEmployeeDB(newEmployee)
       .subscribe(
       data => {
         if (data == 0) {
           this._flashMessagesService.show('Some Error Occured!!', { cssClass: 'alert-danger', timeout: 2000 });
+          this.dialogRef.close();
         }
         else {
           this._flashMessagesService.show('Marital Status Updated Successfully!!', { cssClass: 'alert-success', timeout: 2000 });
+          this.dialogRef.close();
         }
       });
     return status;

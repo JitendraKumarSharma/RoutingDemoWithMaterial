@@ -4,6 +4,8 @@ import { EmployeeService } from '../../services/employee.service';
 import { FlashMessagesService } from 'angular2-flash-messages';
 import { Global } from '../global';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material';
+import { ProgressSpinnerDialogComponent } from '../progress-spinner-dialog/progress-spinner-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -14,13 +16,15 @@ export class LoginComponent implements OnInit {
 
   loginForm: FormGroup;
   public errorMsg: any;
+  private dialogRef;
 
   constructor(
     private formBuilder: FormBuilder,
     private empService: EmployeeService,
     private _flashMessagesService: FlashMessagesService,
     private _global: Global,
-    private router: Router
+    private router: Router,
+    private dialog: MatDialog,
   ) {
     _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.loginForm = formBuilder.group(
@@ -38,13 +42,15 @@ export class LoginComponent implements OnInit {
     debugger
     let email = this.loginForm.controls.email.value;
     let password = this.loginForm.controls.password.value;
+    this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig);
     this.empService.loginUser(email, password)
       .subscribe(
       data => {
         debugger
         localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('userName', data.userName);
+        localStorage.setItem('userName', data.userName);        
         this.router.navigate(['employee']);
+        this.dialogRef.close();
         // this._flashMessagesService.show("User Login Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
         // this.reset();
       },

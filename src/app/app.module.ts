@@ -13,7 +13,7 @@ import { FlashMessagesModule } from 'angular2-flash-messages';
 import { AgmCoreModule } from '@agm/core';
 import { LoginComponent } from './globals/login/login.component';
 import { RegisterComponent } from './globals/register/register.component';
-import { MatInputModule } from '@angular/material';
+import { MatInputModule, MatDialogModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -39,7 +39,8 @@ import { MatCardModule } from '@angular/material/card';
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
   ],
   providers: [Global, EmployeeService],
   bootstrap: [AppComponent],
