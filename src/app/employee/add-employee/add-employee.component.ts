@@ -26,6 +26,7 @@ export class AddEmployeeComponent implements OnInit {
     private _global: Global
 
   ) {
+    //myExtObject.GetLocation(this.countryName, this.stateName, this.cityName);
     _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.reset();
   }
@@ -44,14 +45,18 @@ export class AddEmployeeComponent implements OnInit {
   longitude: number;
   locationChosen = false;
 
+  private countryName: string = "";
+  private stateName: string = "";
+  private cityName: string = "";
+
   ngOnInit() {
     navigator.geolocation.getCurrentPosition(pos => {
       this.longitude = +pos.coords.longitude;
       this.latitude = +pos.coords.latitude;
     });
-    setTimeout(() => {
-      this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig)
-    })
+    // setTimeout(() => {
+    //   this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig)
+    // },1000)
     this.getAllCountry().then(value => {
       if (this.viewEmpData) {
         this.empForm.setValue({
@@ -68,10 +73,12 @@ export class AddEmployeeComponent implements OnInit {
           'emp_ismarried': this.viewEmpData.IsMarried,
           'emp_dob': this.viewEmpData.DOB
         });
-        if (this.viewEmpData.EmpImage != null && this.viewEmpData.empImage != "")
+        this.cityName = this.viewEmpData.City;
+        //this.dialogRef.close();
+        if (this.viewEmpData.EmpImage != null && this.viewEmpData.EmpImage != "")
           this.empImage = this.viewEmpData.EmpImage;
       }
-      this.dialogRef.close();
+
     });
   }
 
@@ -90,6 +97,20 @@ export class AddEmployeeComponent implements OnInit {
     }
   }
   ////////////////////
+
+  setStateName(stateId: number) {
+    for (var cnt in this.stateList) {
+      if (this.stateList[cnt].StateId == stateId) {
+        this.stateName = this.stateList[cnt].StateName;
+        break;
+      }
+    }
+  }
+
+  getLocation(city: any) {
+    // this.cityName = city.target.value;
+    // myExtObject.GetLocation(this.countryName, this.stateName, this.cityName);
+  }
 
   onSubmit() {
     debugger
@@ -234,6 +255,7 @@ export class AddEmployeeComponent implements OnInit {
     this.viewEmpData = null;
     this.empImage = "blank.png";
     myExtObject.resetImage(this.url, this.empImage);
+
     this.getAllCountry();
     this.empForm = this.formBuilder.group({
       emp_id: [null, Validators.nullValidator],
@@ -296,17 +318,43 @@ export class AddEmployeeComponent implements OnInit {
     });
   }
 
-  getStateByCountry(flag: number, country_id: number) {
+  getStateByCountry(flag: number, countryId: number) {
+    for (var cnt in this.countryList) {
+      if (this.countryList[cnt].CountryId == countryId) {
+        this.countryName = this.countryList[cnt].CountryName;
+        break;
+      }
+    }
     return new Promise(resolve => {
-      this.empService.getStateByCountry(country_id)
+      this.empService.getStateByCountry(countryId)
         .subscribe(
           data => {
             this.stateList = data;
             if (this.viewEmpData != null && this.viewEmpData !== undefined && this.viewEmpData.StateId > 0 && flag == 1) {
+              // for (var cnt in this.countryList) {
+              //   if (this.countryList[cnt].CountryId == this.viewEmpData.CountryId) {
+              //     this.countryName = this.countryList[cnt].CountryName;
+              //     break;
+              //   }
+              // }
+              // for (var cnt in this.stateList) {
+              //   if (this.stateList[cnt].StateId == this.viewEmpData.StateId) {
+              //     this.stateName = this.stateList[cnt].StateName;
+              //     break;
+              //   }
+              // }
               resolve();
             }
             else {
               this.empForm.controls['emp_state'].setValue(this.stateList[0].StateId);
+              //this.countryName = this.empForm.controls.emp_country.;
+              for (var cnt in this.countryList) {
+                if (this.countryList[cnt].CountryId == this.empForm.controls.emp_country.value) {
+                  this.countryName = this.countryList[cnt].CountryName;
+                  break;
+                }
+              }
+              this.stateName = this.stateList[0].StateName;
               resolve();
             }
           });

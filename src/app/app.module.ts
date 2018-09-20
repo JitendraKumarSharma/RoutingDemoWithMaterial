@@ -26,7 +26,7 @@ import { MatCardModule } from '@angular/material/card';
   ],
   imports: [
     AgmCoreModule.forRoot({
-      apiKey: "AIzaSyD-ELcW1FiUUJXUyJHS2826ibCJUxomDX4",
+      apiKey: "AIzaSyDulMGKW2_9pqB-Ey_Fc2SdENaPEOojSE0",
       libraries: ["places"]
     }),
     BrowserModule,

@@ -45,19 +45,22 @@ export class LoginComponent implements OnInit {
     this.dialogRef = this.dialog.open(ProgressSpinnerDialogComponent, this._global.dialogConfig);
     this.empService.loginUser(email, password)
       .subscribe(
-      data => {
-        debugger
-        localStorage.setItem('access_token', data.access_token);
-        localStorage.setItem('userName', data.userName);        
-        this.router.navigate(['employee']);
-        this.dialogRef.close();
-        // this._flashMessagesService.show("User Login Successfully!!", { cssClass: 'alert-success', timeout: 2000 });
-        // this.reset();
-      },
-      error => {
-        this.errorMsg = error.error.error_description;
-        this._flashMessagesService.show(this.errorMsg, { cssClass: 'alert-danger', timeout: 2000 });
-      }
+        data => {
+          localStorage.setItem('access_token', data.access_token);
+          localStorage.setItem('userName', data.userName);
+          this.router.navigate(['employee']);
+          this.dialogRef.close();
+        },
+        error => {
+          if (error.status == 0) {
+            this.errorMsg = "API is not running!!";
+          }
+          else {
+            this.errorMsg = error.error.error_description;
+          }
+          this._flashMessagesService.show(this.errorMsg, { cssClass: 'alert-danger', timeout: 2000 });
+          this.dialogRef.close();
+        }
       );
   }
 

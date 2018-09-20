@@ -16,7 +16,6 @@ export class AppComponent {
     private router: Router,
     private _global: Global
   ) {
-    debugger
     _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
   }
   color = 'primary';
