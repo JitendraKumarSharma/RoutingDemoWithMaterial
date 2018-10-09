@@ -14,7 +14,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private _global: Global
+    public _global: Global
   ) {
     _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
   }

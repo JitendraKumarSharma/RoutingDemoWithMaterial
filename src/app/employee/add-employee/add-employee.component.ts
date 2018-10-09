@@ -240,6 +240,7 @@ export class AddEmployeeComponent implements OnInit {
       }
       else {
         self._flashMessagesService.show(msg, { cssClass: 'alert-danger', timeout: 2000 });
+        self.dialogRef.close();
       }
     });
   }
