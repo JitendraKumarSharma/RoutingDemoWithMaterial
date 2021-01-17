@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+//import { CommonModule } from '@angular/common';
 
 import { CustomerRoutingModule } from './customer-routing.module';
 import { CustomerService } from '../services/customer.service';
 
 @NgModule({
   imports: [
-    CommonModule,
+    //CommonModule,
     CustomerRoutingModule
   ],
   declarations: [],

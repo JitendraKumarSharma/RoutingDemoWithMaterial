@@ -145,7 +145,7 @@ export class AddEmployeeComponent implements OnInit {
     if (fileCount > 0) {
       let splitlength: number = (inputEl.files[0].name).split('.').length;
       let ext: string = (inputEl.files[0].name).split('.')[splitlength - 1];
-      if (ext.toLowerCase() != "jpg" && ext.toLowerCase() != "png") {
+      if (ext.toLowerCase() != "jpg" && ext.toLowerCase() != "jpeg" && ext.toLowerCase() != "png") {
         this._flashMessagesService.show('Please select image file!!', { cssClass: 'alert-danger', timeout: 2000 });
         return false;
       }

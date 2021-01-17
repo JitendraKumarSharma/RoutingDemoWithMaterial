@@ -29,7 +29,7 @@ export class LoginComponent implements OnInit {
     _global.isUserLoggedIn = localStorage.getItem('access_token') != null ? true : false;
     this.loginForm = formBuilder.group(
       {
-        email: [null, Validators.email],
+        email: [null, [Validators.email,Validators.required]],
         password: [null, Validators.required],
       }
     );
@@ -46,8 +46,7 @@ export class LoginComponent implements OnInit {
     this.empService.loginUser(email, password)
       .subscribe(
         data => {
-          if(data!=null)
-          {
+          if (data != null) {
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('userName', data.userName);
             this.router.navigate(['employee']);
