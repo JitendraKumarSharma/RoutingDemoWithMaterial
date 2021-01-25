@@ -1,6 +1,6 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { } from 'googlemaps';
+//import { } from 'googlemaps';
 import { MapsAPILoader } from '@agm/core';
 import { Router } from '@angular/router';
 import { Global } from 'src/app/globals/global';

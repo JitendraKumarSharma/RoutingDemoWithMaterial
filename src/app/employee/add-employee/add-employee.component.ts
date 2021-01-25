@@ -306,13 +306,13 @@ export class AddEmployeeComponent implements OnInit {
             this.countryList = data;
             if (this.viewEmpData != null && this.viewEmpData !== undefined && this.viewEmpData.CountryId > 0) {
               this.getStateByCountry(1, this.viewEmpData.CountryId).then(value => {
-                resolve();
+                //resolve('test');
               });
             }
             else {
               this.empForm.controls['emp_country'].setValue(this.countryList[0].CountryId);
               this.getStateByCountry(0, this.countryList[0].CountryId).then(value => {
-                resolve();
+                //resolve('test');
               });
             }
           });
@@ -344,7 +344,7 @@ export class AddEmployeeComponent implements OnInit {
               //     break;
               //   }
               // }
-              resolve();
+              //resolve('test');
             }
             else {
               this.empForm.controls['emp_state'].setValue(this.stateList[0].StateId);
@@ -356,7 +356,7 @@ export class AddEmployeeComponent implements OnInit {
                 }
               }
               this.stateName = this.stateList[0].StateName;
-              resolve();
+              //resolve('test');
             }
           });
     });
